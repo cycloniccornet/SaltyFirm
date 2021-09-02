@@ -1,0 +1,72 @@
+
+.overlay {
+    width:100%;
+    height:100%;
+    background: #000000;
+    opacity: .4;
+    position: absolute;
+}
+
+.topNavigationsbar {
+    background: linear-gradient(to right, #000000 0%,#0022AE 25%, #000000 50%,#0022AE 75%,#000000 100%);
+    color: white;
+    line-height: 20px;
+    border-bottom: 2px solid black;
+    width: 100%;
+    text-align: center;
+    position: sticky;
+}
+
+.topNavigationsbar input {
+    color: black;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.Logo {
+    font-weight: bold;
+    font-size: 25px;
+    cursor:pointer;
+    text-decoration:none;
+    color: inherit;
+    margin-left: 10px;
+    line-height: 50px;
+    margin-top: 5px;
+}
+.login {
+    text-align: right;
+}
+.table {
+    background-color: white;
+    border: 3px solid black;
+}
+h1,h2,h3,h4,h5,h6 {
+    text-align: center;
+    color: white;
+    text-shadow:2px 2px 2px #000;
+}
+body {
+    font-family: Bahnschrift, serif;
+    background-image: url(/img/business-wallpaper.jpg);
+    background-size: 100% 100%;
+    background-attachment: fixed;
+}
+.button {
+    width: 100px;
+}
+.searchBar {
+    position: relative;
+    margin-top: 10px;
+    text-align: center;
+    line-height: 30px;
+    font-size: large;
+}
+.header {
+    font-size: 70px;
+}
+.bottomBar {
+    position: fixed;
+    text-align: right;
+    color: white;
+    margin-left: 25px;
+}

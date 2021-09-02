@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<link th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" rel="stylesheet" media="screen"/>
+<link th:href="@{/css/Stylesheet.css}" href="/css/Stylesheet.css" rel="stylesheet" type="text/css" media="screen"/>
+<link th:href="@{/img/business-wallpaper.jpg}" href="/static/img/" rel="stylesheet" media="screen"/>
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Review</title>
+</head>
+<body style="background-image: url(/img/business-wallpaper.jpg); background-attachment: fixed; background-size: 100% 100%">
+<div class="topNavigationsbar">
+    <span th:if="${user.privileges == null}">
+        <form th:action="@{/}"  method="post">
+            <tr>
+                <span style="float: left; margin-left: 10px">
+                    <td style="text-align: left"><a class="Logo" th:href="@{'/'}" style="text-decoration:none;color: inherit"><span>SALTY</span><span style="color: dodgerblue">FIRM</span></a></td>
+                </span>
+                <span style="text-align: center">
+                    <td th:text="'Username'" style="margin-left: 5px"></td>
+                    <td><input type="text" placeholder="Username" th:field="${user.username}" autocomplete="off" style="line-height: 30px;height: 30px" required></td>
+                    <td th:text="' Password'" style="margin-right: 20px"></td>
+                    <td><input type="password" placeholder="Password" th:field="${user.password}" autocomplete="off" style="line-height: 30px;height: 30px" required></td>
+                    <td><button th:value="Login" type="submit" class="btn btn-lg btn-default" style="margin-right: 10px;margin-left: 10px;height: 30px;line-height: 10px" >Login</button></td>
+                </span>
+                <span style="float: right;margin-right: 10px;margin-top: 10px">
+                    <td><a th:text="'Opret Bruger'" th:href="${'/createUser'}" class="btn btn-lg btn-default" style="margin-left: 10px;height: 30px;line-height: 10px"></a></td>
+                </span>
+            </tr>
+        </form>
+    </span>
+    <span th:if="${user.privileges == 'Bruger'}">
+        <tr>
+            <span style="float: left; margin-left: 10px">
+                    <td style="text-align: left"><a class="Logo" th:href="@{'/'}+${user.userId}" style="text-decoration:none;color: inherit"><span>SALTY</span><span style="color: dodgerblue">FIRM</span></a></td>
+            </span>
+            <span style="text-align: center">
+                <td><a th:href="@{'/user'} + '/' + ${user.userId}" class="btn btn-lg btn-default" style="margin-right: 10px;margin-left: 5%;height: 30px;line-height: 10px">Se Profil</a></td>
+                <td><a th:href="@{'/createReview'} + '/' + ${user.userId}" class="btn btn-lg btn-default" style="margin: 10px;height: 30px;line-height: 10px">Opret Anmeldelse</a></td>
+                <td><span style="margin-top: 5px;margin-bottom: 5px"></span></td>
+            </span>
+            <span style="float: right;margin-right: 10px;margin-top: 10px">
+                <td><b th:text="'Logget ind som: '"></b></td>
+                <td><b th:text="${user.username}" style="color: dodgerblue;margin-left: 5px"></b></td>
+                <td><a th:href="@{'/'}" class="btn btn-lg btn-default" style="margin-right: 10px;margin-left: 10px;height: 30px;line-height: 10px">Log ud</a></td>
+            </span>
+        </tr>
+    </span>
+    <span th:if="${user.privileges == 'Administrator'}">
+        <span style="float: left; margin-left: 10px">
+                    <td style="text-align: left"><a class="Logo" th:href="@{'/'}+${user.userId}" style="text-decoration:none;color: inherit"><span>SALTY</span><span style="color: dodgerblue">FIRM</span></a></td>
+        </span>
+        <span style="text-align: center">
+            <a th:href="@{'/user'} + '/' + ${user.userId}" class="btn btn-lg btn-default" style="margin-right: 10px;margin-left: 5%;height: 30px;line-height: 10px">Se Profil</a>
+            <a th:href="@{'/userList'} + '/' + ${user.userId}" class="btn btn-lg btn-default" style="margin-right: 10px;margin-left: 10px;height: 30px;line-height: 10px">Se Brugerliste</a>
+            <a th:href="@{'/firmList'} + '/' + ${user.userId}" class="btn btn-lg btn-default" style="margin: 10px;height: 30px;line-height: 10px">Se Firmaliste</a>
+            <td><span style="margin-top: 5px;margin-bottom: 5px"></span></td>
+        </span>
+        <span style="float: right;margin-right: 10px;margin-top: 10px">
+            <td><b th:text="'Logget ind som: '"></b></td>
+            <td><b th:text="${user.username}" style="color: dodgerblue;margin-left: 5px"></b></td>
+            <td><a th:href="@{'/'}" class="btn btn-lg btn-default" style="margin-right: 10px;margin-left: 10px;height: 30px;line-height: 10px">Log ud</a></td>
+        </span>
+    </span>
+</div>
+<br><br><br>
+<h1>Opdater Anmeldelse</h1>
+<br>
+<div class="container" style="width: 50%">
+    <form th:action="@{/user/editReview/}+${user.userId}+'/'+${review.reviewId}" method="post">
+        <table class="table table-bordered">
+            <tr>
+                <td style="text-align: right; width: 25%;background-color: #000;color: white;border-right: transparent"><p style="margin-top: 7px;font-size: large">Overordnet information:</p></td>
+                <td style="text-align: left;background-color: #000;color: white;border-left: transparent"><b style="margin-top: 5px"></b></td>
+            </tr>
+            <tr>
+                <th style="text-align: right; width: 25%;background-color: #555;color: white"><p style="margin-top: 7px">Firmaets Navn</p></th>
+                <td><p th:text="${review.firmName}" style="margin-top: 5px;height: 30px;width: 100%;border: none"></p></td>
+            </tr>
+            <tr>
+                <th style="text-align: right; width: 25%;background-color: #555;color: white"><p style="margin-top: 7px">Afdelingens Navn</p></th>
+                <td><p th:text="${review.departmentName}" style="margin-top: 5px;height: 30px;width: 100%;border: none"></p></td>
+            </tr>
+            <tr>
+                <th style="text-align: right; width: 25%;background-color: #555;color: white"><p style="margin-top: 7px">Stilling</p></th>
+                <td><input type="text" th:field="${review.position}" placeholder="Stilling" onfocus="this.placeholder=''" onblur="this.placeholder='Stilling'" style="margin-top: 5px;height: 30px;width: 100%;border: none" required/></td>
+            </tr>
+            <tr>
+                <th style="text-align: right; width: 25%;background-color: #555;color: white"><p style="margin-top: 7px">Ansættelsesperiode</p></th>
+                <td><input type="number" value="1" th:field="${review.employmentTime}" placeholder="Ansættelsesperiode" onfocus="this.placeholder=''" onblur="this.placeholder='Stilling'" style="margin-top: 5px;margin-right: 10px;height: 30px;width: 30%;border: none" required/><span>(Angiv hvor mange måneder du har været ansat)</span></td>
+            </tr>
+            <tr>
+                <th style="text-align: right; width: 25%;background-color: #555;color: white"><p style="margin-top: 7px">Løn</p></th>
+                <td>
+                    <select th:field="${review.salary}" style="margin-top: 5px;height: 30px;width: 100%;border: none">
+                        <option value="1">Under 10.000 kr. </option>
+                        <option value="2">10.000 - 15.000 kr.</option>
+                        <option value="3">15.000 - 20.000 kr.</option>
+                        <option value="4">20.000 - 25.000 kr.</option>
+                        <option value="5">25.000 - 30.000 kr.</option>
+                        <option value="6">30.000 - 35.000 kr.</option>
+                        <option value="7">35.000 - 40.000 kr.</option>
+                        <option value="8">40.000 - 45.000 kr.</option>
+                        <option value="9">45.000 - 50.000 kr.</option>
+                        <option value="10">Over 50.000 kr.</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: right; width: 25%;background-color: #000;color: white;border-right: transparent"><p style="margin-top: 7px;font-size: large">Bedømmelser:</p></td>
+                <td style="text-align: left;background-color: #000;color: white;border-left: transparent"><b style="margin-top: 5px"></b></td>
+            </tr>
+            <tr>
+                <th style="text-align: right; width: 25%;background-color: #555;color: white"><p style="margin-top: 7px">Pensionsordning</p></th>
+                <td>
+                    <input th:field="${review.pensionScheme}" type="number" name="rating" min="1" max="10" step="1" value="5" style="border: none;margin-top: 5px;margin-right: 20px" required/><span>(Giv en karakter fra 1 - 10 point)</span>
+                </td>
+            </tr>
+            <tr>
+                <th style="text-align: right; width: 25%;background-color: #555;color: white"><p style="margin-top: 7px">Arbejdsmiljø</p></th>
+                <td>
+                    <input th:field="${review.workEnvironment}" type="number" name="rating" min="1" max="10" step="1" style="border: none;margin-top: 5px;margin-right: 20px" required/><span>(Giv en karakter fra 1 - 10 point)</span>
+                </td>
+            </tr>
+
+            <tr>
+                <th style="text-align: right; width: 25%;background-color: #555;color: white"><p style="margin-top: 7px">Personalegoder</p></th>
+                <td>
+                    <input th:field="${review.benefits}" type="number" name="rating" min="1" max="10" step="1" style="border: none;margin-top: 5px;margin-right: 20px" required/><span>(Giv en karakter fra 1 - 10 point)</span>
+                </td>
+            </tr>
+            <tr>
+                <th style="text-align: right; width: 25%;background-color: #555;color: white"><p style="margin-top: 7px">Flexibilitet</p></th>
+                <td>
+                    <input th:field="${review.flexibility}" type="number" name="rating" min="1" max="10" step="1" style="border: none;margin-top: 5px;margin-right: 20px" required/><span>(Giv en karakter fra 1 - 10 point)</span>
+                </td>
+            </tr>
+            <tr>
+                <th style="text-align: right; width: 25%;background-color: #555;color: white"><p style="margin-top: 7px">Ledelsen</p></th>
+                <td>
+                    <input th:field="${review.management}" type="number" name="rating" min="1" max="10" step="1" style="border: none;margin-top: 5px;margin-right: 20px" required/><span>(Giv en karakter fra 1 - 10 point)</span>
+                </td>
+            </tr>
+            <tr>
+                <th style="text-align: right; width: 25%;background-color: #555;color: white"><p style="margin-top: 7px">Uddybbende kommentarer</p></th>
+                <td>
+                    <textarea placeholder="Skriv øvrige kommentarer om arbejdspladsen her..." onfocus="this.placeholder=''" onblur="this.placeholder='Skriv øvrige kommentarer om arbejdspladsen her...'" th:field="${review.post}" rows="4" cols="50" style="height: 100%;width: 100%;border: none"></textarea>
+                </td>
+            </tr>
+        </table>
+        <div>
+            <p style="text-align: center"><input type="submit" style="height: 40px;width: 200px;font-size: large;color: green" value="Opdater Anmeldelse" /></p>
+        </div>
+    </form>
+    <div style="text-align: center">
+        <a th:href="'/'+${user.userId}"><button style="height: 40px;width: 200px;font-size: large">Annuller</button></a>
+    </div>
+    <br>
+</div>
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<link th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" rel="stylesheet" media="screen"/>
+<link th:href="@{/css/Stylesheet.css}" href="/css/Stylesheet.css" rel="stylesheet" type="text/css" media="screen"/>
+<link th:href="@{/img/business-wallpaper.jpg}" href="/static/img/" rel="stylesheet" media="screen"/>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body style="background-image: url(/img/business-wallpaper.jpg); background-attachment: fixed; background-size: 100% 100%">
+<div class="topNavigationsbar">
+    <span th:if="${user.privileges == null}">
+        <form th:action="@{/}"  method="post">
+            <tr>
+                <span style="float: left; margin-left: 10px">
+                    <td style="text-align: left"><a class="Logo" th:href="@{'/'}" style="text-decoration:none;color: inherit"><span>SALTY</span><span style="color: dodgerblue">FIRM</span></a></td>
+                </span>
+                <span style="text-align: center">
+                    <td th:text="'Username'" style="margin-left: 5px"></td>
+                    <td><input type="text" placeholder="Username" th:field="${user.username}" autocomplete="off" style="line-height: 30px;height: 30px" required></td>
+                    <td th:text="' Password'" style="margin-right: 20px"></td>
+                    <td><input type="password" placeholder="Password" th:field="${user.password}" autocomplete="off" style="line-height: 30px;height: 30px" required></td>
+                    <td><button th:value="Login" type="submit" class="btn btn-lg btn-default" style="margin-right: 10px;margin-left: 10px;height: 30px;line-height: 10px" >Login</button></td>
+                </span>
+                <span style="float: right;margin-right: 10px;margin-top: 10px">
+                    <td><a th:text="'Opret Bruger'" th:href="${'/createUser'}" class="btn btn-lg btn-default" style="margin-left: 10px;height: 30px;line-height: 10px"></a></td>
+                </span>
+            </tr>
+        </form>
+    </span>
+    <span th:if="${user.privileges == 'Bruger'}">
+        <tr>
+            <span style="float: left; margin-left: 10px">
+                    <td style="text-align: left"><a class="Logo" th:href="@{'/'}+${user.userId}" style="text-decoration:none;color: inherit"><span>SALTY</span><span style="color: dodgerblue">FIRM</span></a></td>
+            </span>
+            <span style="text-align: center">
+                <td><a th:href="@{'/user'} + '/' + ${user.userId}" class="btn btn-lg btn-default" style="margin-right: 10px;margin-left: 5%;height: 30px;line-height: 10px">Se Profil</a></td>
+                <td><a th:href="@{'/createReview'} + '/' + ${user.userId}" class="btn btn-lg btn-default" style="margin: 10px;height: 30px;line-height: 10px">Opret Anmeldelse</a></td>
+                <td><span style="margin-top: 5px;margin-bottom: 5px"></span></td>
+            </span>
+            <span style="float: right;margin-right: 10px;margin-top: 10px">
+                <td><b th:text="'Logget ind som: '"></b></td>
+                <td><b th:text="${user.username}" style="color: dodgerblue;margin-left: 5px"></b></td>
+                <td><a th:href="@{'/'}" class="btn btn-lg btn-default" style="margin-right: 10px;margin-left: 10px;height: 30px;line-height: 10px">Log ud</a></td>
+            </span>
+        </tr>
+    </span>
+    <span th:if="${user.privileges == 'Administrator'}">
+        <span style="float: left; margin-left: 10px">
+                    <td style="text-align: left"><a class="Logo" th:href="@{'/'}+${user.userId}" style="text-decoration:none;color: inherit"><span>SALTY</span><span style="color: dodgerblue">FIRM</span></a></td>
+        </span>
+        <span style="text-align: center">
+            <a th:href="@{'/user'} + '/' + ${user.userId}" class="btn btn-lg btn-default" style="margin-right: 10px;margin-left: 5%;height: 30px;line-height: 10px">Se Profil</a>
+            <a th:href="@{'/userList'} + '/' + ${user.userId}" class="btn btn-lg btn-default" style="margin-right: 10px;margin-left: 10px;height: 30px;line-height: 10px">Se Brugerliste</a>
+            <a th:href="@{'/firmList'} + '/' + ${user.userId}" class="btn btn-lg btn-default" style="margin: 10px;height: 30px;line-height: 10px">Se Firmaliste</a>
+            <td><span style="margin-top: 5px;margin-bottom: 5px"></span></td>
+        </span>
+        <span style="float: right;margin-right: 10px;margin-top: 10px">
+            <td><b th:text="'Logget ind som: '"></b></td>
+            <td><b th:text="${user.username}" style="color: dodgerblue;margin-left: 5px"></b></td>
+            <td><a th:href="@{'/'}" class="btn btn-lg btn-default" style="margin-right: 10px;margin-left: 10px;height: 30px;line-height: 10px">Log ud</a></td>
+        </span>
+    </span>
+</div>
+<br><br><br>
+<h1>Opdater Brugeroplysninger</h1>
+<br>
+<div class="container" style="width: 50%">
+    <form th:action="@{/user/editUser}+'/'+${user.userId}" method="post">
+        <table class="table table-bordered">
+            <tr>
+                <th style="text-align: right; width: 25%;background-color: black;color: white"><p style="margin-top: 5px">Brugernavn</p></th>
+                <td><input type="text" th:field="${user.username}" placeholder="Brugernavn" onfocus="this.placeholder=''" onblur="this.placeholder='Brugernavn'" style="height: 30px;border: none;width: 100%" required/></td>
+            </tr>
+            <tr>
+                <th style="text-align: right;background-color: black;color: white"><p style="margin-top: 5px">Adgangskode</p></th>
+                <td><input type="password" th:field="${user.password}" placeholder="Adgangskode" onfocus="this.placeholder=''" onblur="this.placeholder='Adgangskode'" style="height: 30px;border: none;width: 100%" required/></td>
+            </tr>
+            <tr>
+                <th style="text-align: right;background-color: black;color: white"><p style="margin-top: 5px">Fornavn</p></th>
+                <td><input type="text" th:field="${user.firstname}" placeholder="Fornavn" onfocus="this.placeholder=''" onblur="this.placeholder='Fornavn'" style="height: 30px;border: none;width: 100%" required/></td>
+            </tr>
+            <tr>
+                <th style="text-align: right;background-color: black;color: white"><p style="margin-top: 5px">Efternavn</p></th>
+                <td><input type="text" th:field="${user.lastname}" placeholder="Efternavn" onfocus="this.placeholder=''" onblur="this.placeholder='Efternavn'" style="height: 30px;border: none;width: 100%" required/></td>
+            </tr>
+            <tr>
+                <th style="text-align: right;background-color: black;color: white"><p style="margin-top: 5px">Email adresse</p></th>
+                <td><input type="email" th:field="${user.mail}" placeholder="Email adresse" onfocus="this.placeholder=''" onblur="this.placeholder='Email adresse'" style="height: 30px;border: none;width: 100%" required/></td>
+            </tr>
+            <tr>
+                <th style="text-align: right;background-color: black;color: white"><p style="margin-top: 5px">Uddannelse</p></th>
+                <td><input type="text" th:field="${user.education}" placeholder="Uddannelse" onfocus="this.placeholder=''" onblur="this.placeholder='Uddannelse'" style="height: 30px;border: none;width: 100%" required/></td>
+            </tr>
+            <tr>
+                <th style="text-align: right;background-color: black;color: white"><p style="margin-top: 5px">Nationalitet</p></th>
+                <td><input type="text" th:field="${user.nationality}" placeholder="Nationalitet" onfocus="this.placeholder=''" onblur="this.placeholder='Nationalitet'" style="height: 30px;border: none;width: 100%" required/></td>
+            </tr>
+            <tr>
+                <th style="text-align: right;background-color: black;color: white"><p style="margin-top: 5px">Telefon nummer</p></th>
+                <td><input type="text" minlength="8" maxlength="8" pattern="[0-9]{8}" th:field="${user.phoneNumber}" placeholder="Telefon Nummer" onfocus="this.placeholder=''" onblur="this.placeholder='Tlf nummer'" style="height: 30px;border: none;width: 100%" required/></td>
+            </tr>
+            <tr>
+                <th style="text-align: right;background-color: black;color: white"><p style="margin-top: 5px">Køn</p></th>
+                <td>
+                    <select th:field="${user.gender}" style="height: 30px;border: none;width: 100%">
+                        <option value="null">Ikke oplyst</option>
+                        <option value="m">Mand</option>
+                        <option value="f">Kvinde</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th style="text-align: right;background-color: black;color: white"><p style="margin-top: 5px">Fødselsdato</p></th>
+                <td><input type="date" th:field="${user.birthdate}" minlength="10" maxlength="10" placeholder="dd-mm-yyyy" onfocus="this.placeholder=''" onblur="this.placeholder='dd-mm-yyyy'" style="height: 30px;border: none;width: 100%" required/></td>
+            </tr>
+        </table>
+        <tr>
+            <td><input type="hidden" th:field="${user.privileges}"/></td>
+        </tr>
+        <br>
+        <div style="text-align: center">
+            <p><input type="submit" value="Opdater" style="height: 40px;width: 200px;font-size: large;color: green"/></p>
+        </div>
+    </form>
+</div>
+<br>
+<div style="text-align: center">
+    <a th:href="@{'/'}+${user.userId}"><button style="height: 40px;width: 200px;font-size: large">Tilbage</button></a>
+</div>
+<br>
+</body>
+</html>
